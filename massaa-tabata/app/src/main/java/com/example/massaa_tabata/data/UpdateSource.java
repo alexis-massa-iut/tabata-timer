@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class UpdateSource {
 
     // Liste des auditeurs
-    private ArrayList<OnUpdateListener> listeners = new ArrayList<OnUpdateListener>();
+    private ArrayList<OnUpdateListener> listeners = new ArrayList<>();
 
     // Méthode d'abonnement
     public void addOnUpdateListener(OnUpdateListener listener) {

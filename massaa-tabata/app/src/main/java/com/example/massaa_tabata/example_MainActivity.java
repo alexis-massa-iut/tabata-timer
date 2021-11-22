@@ -17,7 +17,7 @@ import com.example.massaa_tabata.data.OnUpdateListener;
 
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements OnUpdateListener {
+public class example_MainActivity extends BaseActivity implements OnUpdateListener {
 
     // VIEW
     private TextView timerValue;
