@@ -3,8 +3,10 @@ package com.example.massaa_tabata.db;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(tableName = "seance")
-public class Seance {
+public class Seance implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private long id;

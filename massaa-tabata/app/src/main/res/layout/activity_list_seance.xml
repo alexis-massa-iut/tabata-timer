@@ -23,7 +23,7 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
 
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/listview_seances"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

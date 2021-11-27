@@ -8,6 +8,10 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Class to handle menu across all activities
+ * Every Activity that needs the top bar needs to extend this class
+ */
 public class BaseActivity extends AppCompatActivity {
 
     @Override
