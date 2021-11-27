@@ -1,5 +1,6 @@
 package com.example.massaa_tabata.data;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -20,6 +21,10 @@ import com.example.massaa_tabata.db.Seance;
 import java.util.List;
 
 public class SeanceAdapter extends ArrayAdapter<Seance> {
+
+    // DATABASE INSTANCE
+    private DatabaseClient databaseClient;
+
 
     public SeanceAdapter(Context context, List<Seance> seances) {
         super(context, R.layout.list_item, seances);
@@ -83,7 +88,34 @@ public class SeanceAdapter extends ArrayAdapter<Seance> {
     }
 
     private void deleteSeance(Seance seance) {
-        // TODO : delete
+
+        /**
+         * Async class to delete the seance
+         */
+        class DeleteSeance extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                databaseClient.getAppDatabase()
+                        .seanceDAO()
+                        .delete(seance);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void unused) {
+                super.onPostExecute(unused);
+
+                Activity activity = (Activity) getContext();
+                activity.setResult(Activity.RESULT_OK);
+                Toast.makeText(activity.getApplicationContext(), "Séance supprimée", Toast.LENGTH_LONG).show();
+            }
+
+        }
+
+        // execute async request
+        DeleteSeance deleteSeance = new DeleteSeance();
+        deleteSeance.execute();
 
     }
 
