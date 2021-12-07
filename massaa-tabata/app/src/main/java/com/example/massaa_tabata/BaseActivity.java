@@ -31,10 +31,12 @@ public class BaseActivity extends AppCompatActivity {
                 break;
             case R.id.workout_list:
                 Intent intentListSeance = new Intent(this, ListSeanceActivity.class);
+                intentListSeance.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intentListSeance);
                 break;
             case R.id.create_workout:
                 Intent intentAddSeance = new Intent(this, AddSeanceActivity.class);
+                intentAddSeance.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intentAddSeance);
                 break;
             default:

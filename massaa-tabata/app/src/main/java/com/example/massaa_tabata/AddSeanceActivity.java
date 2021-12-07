@@ -1,5 +1,6 @@
 package com.example.massaa_tabata;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -119,6 +120,9 @@ public class AddSeanceActivity extends BaseActivity {
 
                 // Once seance is created, finish activity AddSeanceActivity
                 setResult(RESULT_OK);
+                Intent intentListSeance = new Intent(getApplicationContext(), ListSeanceActivity.class);
+                intentListSeance.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intentListSeance);
                 finish();
                 Toast.makeText(getApplicationContext(), "Séance ajoutée", Toast.LENGTH_LONG).show();
             }

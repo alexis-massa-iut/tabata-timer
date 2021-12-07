@@ -28,6 +28,7 @@ public class SeanceAdapter extends ArrayAdapter<Seance> {
 
     public SeanceAdapter(Context context, List<Seance> seances) {
         super(context, R.layout.list_item, seances);
+        databaseClient = DatabaseClient.getInstance(getContext());
     }
 
     /**
@@ -70,6 +71,7 @@ public class SeanceAdapter extends ArrayAdapter<Seance> {
             @Override
             public void onClick(View v) {
                 Intent intentAdd = new Intent(getContext(), AddSeanceActivity.class);
+                intentAdd.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intentAdd.putExtra("Seance", seance);
                 getContext().startActivity(intentAdd);
             }
@@ -79,6 +81,7 @@ public class SeanceAdapter extends ArrayAdapter<Seance> {
             @Override
             public void onClick(View v) {
                 Intent intentMain = new Intent(getContext(), MainActivity.class);
+                intentMain.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intentMain.putExtra("Seance", seance);
                 getContext().startActivity(intentMain);
             }
@@ -106,9 +109,9 @@ public class SeanceAdapter extends ArrayAdapter<Seance> {
             protected void onPostExecute(Void unused) {
                 super.onPostExecute(unused);
 
-                Activity activity = (Activity) getContext();
-                activity.setResult(Activity.RESULT_OK);
-                Toast.makeText(activity.getApplicationContext(), "Séance supprimée", Toast.LENGTH_LONG).show();
+                SeanceAdapter.this.remove(seance);
+                SeanceAdapter.this.notifyDataSetChanged();
+                Toast.makeText(SeanceAdapter.this.getContext(), "Séance supprimée", Toast.LENGTH_LONG).show();
             }
 
         }
