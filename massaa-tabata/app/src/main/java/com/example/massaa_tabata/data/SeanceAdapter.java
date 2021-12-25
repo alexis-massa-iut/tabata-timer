@@ -60,31 +60,20 @@ public class SeanceAdapter extends ArrayAdapter<Seance> {
         textViewTask.setText(seance.getName());
 
         // Set on click actions
-        ib_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteSeance(seance);
-            }
+        ib_delete.setOnClickListener(v -> deleteSeance(seance));
+
+        ib_edit.setOnClickListener(v -> {
+            Intent intentAdd = new Intent(getContext(), AddSeanceActivity.class);
+            intentAdd.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intentAdd.putExtra("Seance", seance);
+            getContext().startActivity(intentAdd);
         });
 
-        ib_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentAdd = new Intent(getContext(), AddSeanceActivity.class);
-                intentAdd.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                intentAdd.putExtra("Seance", seance);
-                getContext().startActivity(intentAdd);
-            }
-        });
-
-        ib_play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentMain = new Intent(getContext(), MainActivity.class);
-                intentMain.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                intentMain.putExtra("Seance", seance);
-                getContext().startActivity(intentMain);
-            }
+        ib_play.setOnClickListener(v -> {
+            Intent intentMain = new Intent(getContext(), MainActivity.class);
+            intentMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intentMain.putExtra("Seance", seance);
+            getContext().startActivity(intentMain);
         });
 
         return rowView;

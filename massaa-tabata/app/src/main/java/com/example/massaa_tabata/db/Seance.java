@@ -3,7 +3,13 @@ package com.example.massaa_tabata.db;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.massaa_tabata.data.Pair;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 @Entity(tableName = "seance")
 public class Seance implements Serializable {
@@ -84,5 +90,20 @@ public class Seance implements Serializable {
 
     public void setRestTime(int restTime) {
         this.restTime = restTime;
+    }
+
+    public List<Pair<String, Integer>> getRoutine() {
+        List<Pair<String,Integer>> timeList = new ArrayList<>();
+
+        timeList.add(new Pair<>("Préparation", getPrepTime()));
+        for (int i = 0; i < getNbSequences(); i++) {
+            for (int j = 0; j < getNbCycles(); j++) {
+                timeList.add(new Pair<>("Travail", getWorkTime()));
+                timeList.add(new Pair<>("Repos", getRestTime()));
+            }
+            timeList.add(new Pair<>("Repos long", getLongRestTime()));
+        }
+
+        return timeList;
     }
 }

@@ -82,13 +82,14 @@ public class Compteur extends UpdateSource {
         timer = null;
     }
 
+    public long getTimeDiff(){ return updatedTime; }
+
     public int getMinutes() {
         return (int) (updatedTime / 1000)/60;
     }
 
     public int getSecondes() {
-        int secs = (int) (updatedTime / 1000);
-        return secs % 60;
+        return (int) (updatedTime / 1000) % 60;
     }
 
     public int getMillisecondes() {

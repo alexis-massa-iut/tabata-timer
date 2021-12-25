@@ -8,7 +8,9 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
@@ -31,18 +33,6 @@
             android:textAlignment="center"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline" />
 
-
-        <!--        <ProgressBar-->
-        <!--            android:id="@+id/progressBar"-->
-        <!--            style="?android:attr/progressBarStyleHorizontal"-->
-        <!--            android:layout_width="200dp"-->
-        <!--            android:layout_height="200dp"-->
-        <!--            android:background="@drawable/circle_shape"-->
-        <!--            android:indeterminate="false"-->
-        <!--            android:max="100"-->
-        <!--            android:progress="65"-->
-        <!--            android:progressDrawable="@drawable/circular_progress_bar" />-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,116 +40,247 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/timerValue"
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="00:00:00"
-                android:textSize="40sp" />
+                android:layout_weight="1">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_shape"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progress="65"
+                    android:progressDrawable="@drawable/circular_progress_bar"
+                    app:layout_constraintBottom_toBottomOf="@+id/timerValue"
+                    app:layout_constraintEnd_toEndOf="@+id/timerValue"
+                    app:layout_constraintStart_toStartOf="@+id/timerValue"
+                    app:layout_constraintTop_toTopOf="@+id/timerValue" />
+
+                <TextView
+                    android:id="@+id/timerValue"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="00:00:00"
+                    android:textSize="40sp" />
+
+                <ImageView
+                    android:id="@+id/ic_sound"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="top|end"
+                    android:background="@drawable/ic_sound_on"
+                    android:onClick="onMute" />
+
+
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/previous2"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="PREVIOUS2"
-                    android:textAlignment="center" />
+                    android:weightSum="2">
 
-                <TextView
-                    android:id="@+id/previous1"
+                    <TextView
+                        android:id="@+id/p2label"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:paddingEnd="5dp"
+                        android:textAlignment="textEnd"
+                        android:textSize="15sp" />
 
+                    <TextView
+                        android:id="@+id/p2time"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:paddingStart="5dp"
+                        android:textAlignment="textStart"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="PREVIOUS1"
-                    android:textAlignment="center" />
+                    android:weightSum="2">
 
-                <TextView
-                    android:id="@+id/current"
+                    <TextView
+                        android:id="@+id/p1label"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:paddingEnd="5dp"
+                        android:textAlignment="textEnd"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/p1time"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:paddingStart="5dp"
+                        android:textAlignment="textStart"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="CURRENT"
-                    android:textAlignment="center" />
+                    android:weightSum="2">
 
-                <TextView
-                    android:id="@+id/next1"
+                    <TextView
+                        android:id="@+id/cLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:paddingEnd="5dp"
+                        android:textAlignment="textEnd"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/cTime"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:paddingStart="5dp"
+                        android:textAlignment="textStart"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="NEXT1"
-                    android:textAlignment="center" />
+                    android:weightSum="2">
 
-                <TextView
-                    android:id="@+id/next2"
+                    <TextView
+                        android:id="@+id/n1label"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:paddingEnd="5dp"
+                        android:textAlignment="textEnd"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/n1time"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:paddingStart="5dp"
+                        android:textAlignment="textStart"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="NEXT2"
-                    android:textAlignment="center" />
+                    android:weightSum="2">
 
+                    <TextView
+                        android:id="@+id/n2label"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:paddingEnd="5dp"
+                        android:textAlignment="textEnd"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/n2time"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:paddingStart="5dp"
+                        android:textAlignment="textStart"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:layout_height="60dp"
+            android:weightSum="4">
 
-            <ImageButton
-                android:id="@+id/stopButton"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/ic_stop"
-                android:backgroundTint="@color/purple_500"
-                android:onClick="onReset" />
+            <ImageView
+                android:id="@+id/ic_stop"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/customborder"
+                android:backgroundTint="#DCDCDC"
+                android:onClick="onReset"
+                android:src="@drawable/ic_stop"
+                app:tint="@color/purple_500" />
 
-            <ImageButton
-                android:id="@+id/rewindButton"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/ic_fast_rewind"
-                android:backgroundTint="@color/purple_500"
-                android:onClick="onRewind" />
+            <ImageView
+                android:id="@+id/ic_restart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/customborder"
+                android:backgroundTint="#DCDCDC"
+                android:onClick="onRestart"
+                android:src="@drawable/ic_restart"
 
-            <ImageButton
-                android:id="@+id/fastforwardButton"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/ic_fast_forward"
-                android:backgroundTint="@color/purple_500"
-                android:onClick="onFastforward" />
+                app:tint="@color/purple_500" />
 
-            <ImageButton
-                android:id="@+id/playPauseButton"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/ic_play"
-                android:backgroundTint="@color/purple_500"
-                android:onClick="onReset" />
+            <ImageView
+                android:id="@+id/ic_fast_forward"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/customborder"
+                android:backgroundTint="#DCDCDC"
+                android:onClick="onFastforward"
+                android:src="@drawable/ic_fast_forward"
+                app:tint="@color/purple_500" />
+
+            <ImageView
+                android:id="@+id/ic_play_pause"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/customborder"
+                android:backgroundTint="#DCDCDC"
+                android:onClick="onStart"
+                android:src="@drawable/ic_play"
+                app:tint="@color/purple_500" />
 
         </LinearLayout>
 
