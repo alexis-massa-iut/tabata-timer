@@ -1,5 +1,6 @@
 package com.example.massaa_tabata;
 
+import android.app.Application;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;

@@ -7,8 +7,6 @@ import com.example.massaa_tabata.data.Pair;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 @Entity(tableName = "seance")
@@ -93,14 +91,15 @@ public class Seance implements Serializable {
     }
 
     public List<Pair<String, Integer>> getRoutine() {
-        List<Pair<String,Integer>> timeList = new ArrayList<>();
+        List<Pair<String, Integer>> timeList = new ArrayList<>();
 
         timeList.add(new Pair<>("Préparation", getPrepTime()));
         for (int i = 0; i < getNbSequences(); i++) {
-            for (int j = 0; j < getNbCycles(); j++) {
+            for (int j = 0; j < getNbCycles() - 1; j++) {
                 timeList.add(new Pair<>("Travail", getWorkTime()));
                 timeList.add(new Pair<>("Repos", getRestTime()));
             }
+            timeList.add(new Pair<>("Travail", getWorkTime()));
             timeList.add(new Pair<>("Repos long", getLongRestTime()));
         }
 

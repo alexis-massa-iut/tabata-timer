@@ -21,4 +21,6 @@
     <string name="workout_list">Liste des séances</string>
     <string name="back">Retourà la page principale</string>
     <string name="list_seance">Liste des séances</string>
+    <string name="activity">Activité</string>
+    <string name="zero">0</string>
 </resources>

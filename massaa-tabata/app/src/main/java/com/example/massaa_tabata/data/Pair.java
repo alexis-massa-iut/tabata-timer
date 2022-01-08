@@ -1,5 +1,10 @@
 package com.example.massaa_tabata.data;
 
+/**
+ * Custom class Pair : paire activité, durée
+ * @param <Label> label de l'activité
+ * @param <Time> durée de l'activité
+ */
 public class Pair<Label, Time> {
     private Label label;
     private Time time;

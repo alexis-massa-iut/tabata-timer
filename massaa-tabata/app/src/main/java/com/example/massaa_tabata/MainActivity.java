@@ -1,12 +1,14 @@
 package com.example.massaa_tabata;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.example.massaa_tabata.data.Compteur;
 import com.example.massaa_tabata.data.OnUpdateListener;
@@ -27,83 +29,129 @@ public class MainActivity extends BaseActivity implements OnUpdateListener {
     // DATA
     private Compteur compteur;
     private Seance seance;
+    private int currentPosition;
     private List<Pair<String, Integer>> timeArray;
+    private MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mp = MediaPlayer.create(getApplicationContext(), R.raw.bell);
+        currentPosition = 0;
 
         // Récupérer la view
-        timerValue = (TextView) findViewById(R.id.timerValue);
-        p2label = (TextView) findViewById(R.id.p2label);
-        p2time = (TextView) findViewById(R.id.p2time);
-        p1label = (TextView) findViewById(R.id.p1label);
-        p1time = (TextView) findViewById(R.id.p1time);
-        cLabel = (TextView) findViewById(R.id.cLabel);
-        cTime = (TextView) findViewById(R.id.cTime);
-        n1label = (TextView) findViewById(R.id.n1label);
-        n1time = (TextView) findViewById(R.id.n1time);
-        n2label = (TextView) findViewById(R.id.n2label);
-        n2time = (TextView) findViewById(R.id.n2time);
-        sound = (ImageView) findViewById(R.id.ic_sound);
-        stop = (ImageView) findViewById(R.id.ic_stop);
-        restart = (ImageView) findViewById(R.id.ic_restart);
-        fastForward = (ImageView) findViewById(R.id.ic_fast_forward);
-        playPause = (ImageView) findViewById(R.id.ic_play_pause);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        timerValue = findViewById(R.id.timerValue);
+        p2label = findViewById(R.id.p2label);
+        p2time = findViewById(R.id.p2time);
+        p1label = findViewById(R.id.p1label);
+        p1time = findViewById(R.id.p1time);
+        cLabel = findViewById(R.id.cLabel);
+        cTime = findViewById(R.id.cTime);
+        n1label = findViewById(R.id.n1label);
+        n1time = findViewById(R.id.n1time);
+        n2label = findViewById(R.id.n2label);
+        n2time = findViewById(R.id.n2time);
+        sound = findViewById(R.id.ic_sound);
+        stop = findViewById(R.id.ic_stop);
+        restart = findViewById(R.id.ic_restart);
+        fastForward = findViewById(R.id.ic_fast_forward);
+        playPause = findViewById(R.id.ic_play_pause);
+        progressBar = findViewById(R.id.progressBar);
 
-        // Récupérer les extras
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            seance = (Seance) extras.getSerializable("Seance");
-            if (seance != null) {
-                Log.d(TAG, seance.toString());
-                Toast.makeText(getApplicationContext(), "Séance chargée", Toast.LENGTH_LONG).show();
-                timeArray = seance.getRoutine();
-//                Log.d(TAG, timeArray.toString());
-                play(timeArray, 4);
+
+        /*
+        Si instance sauvée : reprendre
+        Sinon :
+            Si seance dans extras : jouer
+            Sinon : Compteur par défaut
+         */
+        if (savedInstanceState != null) {
+            currentPosition = savedInstanceState.getInt("currentPosition");
+            seance = (Seance) savedInstanceState.getSerializable("seance");
+            play(currentPosition);
+        } else {
+            // Récupérer les extras
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+
+                seance = (Seance) extras.getSerializable("Seance");
+                if (seance != null) {
+                    Toast.makeText(getApplicationContext(), "Séance chargée", Toast.LENGTH_LONG).show();
+                    timeArray = seance.getRoutine();
+
+                    // Initialiser l'objet Compteur au premier élément
+                    compteur = new Compteur();
+
+                    // Abonner l'activité au compteur pour "suivre" les événements
+                    compteur.addOnUpdateListener(this);
+
+                    play(currentPosition);
+
+                }
+            } else {
+                // Initialiser l'objet Compteur par défaut
+                compteur = new Compteur();
+
+                // Abonner l'activité au compteur pour "suivre" les événements
+                compteur.addOnUpdateListener(this);
+
+                // Mise à jour graphique
+                miseAJour();
             }
+
         }
-
-
-        // Initialiser l'objet Compteur
-        compteur = new Compteur();
-
-        // Abonner l'activité au compteur pour "suivre" les événements
-        compteur.addOnUpdateListener(this);
-
-        // Mise à jour graphique
-        miseAJour();
-
-
     }
 
     /**
-     * @param timeArray liste des activités à réaliser (paires :
-     * @param i         position courante dans la séance
+     * Joue l'activité à la position i
+     *
+     * @param i position courante dans la séance
      */
-    private void play(List<Pair<String, Integer>> timeArray, Integer i) {
+    private void play(int i) {
         int size = timeArray.size();
-        timerValue = (TextView) findViewById(R.id.timerValue);
 
+//        Log.d(TAG, String.valueOf(currentPosition));
+
+//      Affichage labels + temps
         if (i >= 2) {
             p2label.setText(timeArray.get(i - 2).getLabel());
             p2time.setText(String.valueOf(timeArray.get(i - 2).getTime()));
+        } else {
+            p2label.setText("");
+            p2time.setText("");
         }
         if (i >= 1) {
             p1label.setText(timeArray.get(i - 1).getLabel());
             p1time.setText(String.valueOf(timeArray.get(i - 1).getTime()));
+        } else {
+            p1label.setText("");
+            p1time.setText("");
         }
         cLabel.setText(timeArray.get(i).getLabel());
         cTime.setText(String.valueOf(timeArray.get(i).getTime()));
         if (i < size) {
             n1label.setText(timeArray.get(i + 1).getLabel());
             n1time.setText(String.valueOf(timeArray.get(i + 1).getTime()));
+        } else {
+            n1label.setText("");
+            n1time.setText("");
         }
         if (i < size - 1) {
             n2label.setText(timeArray.get(i + 2).getLabel());
             n2time.setText(String.valueOf(timeArray.get(i + 2).getTime()));
+        } else {
+            n2label.setText("");
+            n2time.setText("");
+        }
+
+        // Lancer timer courrant
+        compteur.setInitialTime(timeArray.get(i).getTime());
+        // Mise à jour graphique
+        miseAJour();
+
+        if (i != 0) {
+            compteur.start();
         }
     }
 
@@ -120,17 +168,21 @@ public class MainActivity extends BaseActivity implements OnUpdateListener {
         compteur.pause();
         playPause.setImageResource(R.drawable.ic_play);
         playPause.setOnClickListener(v -> onStart(view));
-
     }
 
     // Remettre à zéro le compteur
     public void onReset(View view) {
         compteur.reset();
+        playPause.setImageResource(R.drawable.ic_play);
+        playPause.setOnClickListener(v -> onStart(view));
+
     }
 
-    // TODO : Skip to next position in list
+    // Skip to next position in list
     public void onFastforward(View view) {
         compteur.reset();
+        currentPosition++;
+        play(currentPosition);
     }
 
     // Restart timer from 0
@@ -140,15 +192,15 @@ public class MainActivity extends BaseActivity implements OnUpdateListener {
     }
 
     // Mute sound
-    // TODO : MUTE SOUND
     public void onMute(View view) {
+        mp.setVolume(0, 0);
         sound.setBackgroundResource(R.drawable.ic_sound_off);
         sound.setOnClickListener(v -> onUnMute(view));
     }
 
     // Unmute sound
-    // TODO : UNMUTE SOUND
     public void onUnMute(View view) {
+        mp.setVolume(1, 1);
         sound.setBackgroundResource(R.drawable.ic_sound_on);
         sound.setOnClickListener(v -> onMute(view));
     }
@@ -161,6 +213,17 @@ public class MainActivity extends BaseActivity implements OnUpdateListener {
                 + String.format("%02d", compteur.getSecondes()) + ":"
                 + String.format("%03d", compteur.getMillisecondes()));
 
+        // Affichage progress bar
+        long progress = (100 * compteur.getTimeDiff()) / compteur.getInitialTime();
+        progressBar.setProgress((int) progress);
+
+        // Si le timer est terminé et qu'une activité est chargée : avancer d'une activité
+        if (compteur.getTimeDiff() == 0 && seance != null) {
+            mp.start();
+            currentPosition++;
+            play(currentPosition);
+        }
+
     }
 
     /**
@@ -172,5 +235,12 @@ public class MainActivity extends BaseActivity implements OnUpdateListener {
         miseAJour();
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        // save state of activity
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable("seance", seance);
+        savedInstanceState.putInt("currentPosition", currentPosition);
+    }
 
 }

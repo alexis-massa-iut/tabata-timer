@@ -1,24 +1,22 @@
 package com.example.massaa_tabata.data;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 
 public class Compteur extends UpdateSource {
 
-    // CONSTANTE
-    private final static long INITIAL_TIME = 5000;
+    // Default
+    private long INITIAL_TIME = 5000;
 
     // DATA
-    private long updatedTime = INITIAL_TIME;
+    private long updatedTime;
     private CountDownTimer timer;
 
 
-    public Compteur() {
-        updatedTime = INITIAL_TIME;
-    }
+    public Compteur() { updatedTime = INITIAL_TIME; }
 
     // Lancer le compteur
     public void start() {
-
         if (timer == null) {
 
             // Créer le CountDownTimer
@@ -35,6 +33,9 @@ public class Compteur extends UpdateSource {
                 // Callback fired when the time is up
                 public void onFinish() {
                     updatedTime = 0;
+
+                    // Détruire le timer
+                    stop();
 
                     // Mise à jour
                     update();
@@ -82,10 +83,12 @@ public class Compteur extends UpdateSource {
         timer = null;
     }
 
-    public long getTimeDiff(){ return updatedTime; }
+    public long getTimeDiff() {
+        return updatedTime;
+    }
 
     public int getMinutes() {
-        return (int) (updatedTime / 1000)/60;
+        return (int) (updatedTime / 1000) / 60;
     }
 
     public int getSecondes() {
@@ -94,6 +97,15 @@ public class Compteur extends UpdateSource {
 
     public int getMillisecondes() {
         return (int) (updatedTime % 1000);
+    }
+
+    public int getInitialTime() {
+        return (int) INITIAL_TIME;
+    }
+
+    public void setInitialTime(int initialTime) {
+        INITIAL_TIME = initialTime* 1000L;
+        updatedTime = INITIAL_TIME;
     }
 
 }
